@@ -14,7 +14,9 @@ const logos = [
   <div
     class="relative h-screen flex flex-col items-center justify-between bg-image overflow-clip"
   >
-    <main class="flex flex-col items-center text-center p-4">
+    <main
+      class="flex flex-col items-center justify-center h-full text-center p-4"
+    >
       <Image
         width="300"
         height="200"
@@ -24,18 +26,12 @@ const logos = [
       />
 
       <Image
-        width="128"
-        height="128"
+        width="60"
+        height="60"
         alt="NSUSN Logo."
         src="/images/chevron.svg"
-        class={"mb-[50px] md:hidden"}
+        class={"my-[50px] md:hidden"}
       />
-
-      <!-- <h2
-        class="letters font-oswald text-white font-medium text-center uppercase leading-none tracking-[4px] text-[20px] xl:text-[40px]"
-      >
-        IF you’re THE disruptive
-      </h2> -->
 
       <h2 class="subtext-container">
         <span class="text-wrapper">
@@ -44,26 +40,13 @@ const logos = [
             id="textWrapper"
             class="letters font-oswald text-white font-medium text-center uppercase leading-none tracking-[4px] text-[20px] xl:text-[40px]"
           >
-            IF you’re THE disruptive
           </span>
         </span>
       </h2>
 
-      <!-- <div class="my-4 md:my-8 gradient-text w-full whitespace-nowrap letters">
-        {
-          "ENTREPRENEUR"
-            .split("")
-            .map((letter) => (
-              <span class="uppercase font-big-shoulders text-[54px] sm:text-[64px] md:text-[100px] md2:text-[120px] md3:text-[140px] lg:text-[160px] xl:text-[180px] 3xl:text-[220px] leading-none letter">
-                {letter}
-              </span>
-            ))
-        }
-      </div> -->
-
       <div
         id="heading"
-        class="my-4 md:my-8 w-full whitespace-nowrap uppercase font-big-shoulders text-[54px] sm:text-[64px] md:text-[100px] md2:text-[120px] md3:text-[140px] lg:text-[160px] xl:text-[180px] 3xl:text-[220px] leading-none tracking-[30px]"
+        class="my-4 md:my-8 w-full whitespace-nowrap uppercase font-big-shoulders text-[54px] sm:text-[64px] md:text-[100px] md2:text-[120px] md3:text-[140px] lg:text-[160px] xl:text-[180px] 3xl:text-[220px] leading-none tracking-[12px] gradient-text"
       >
         ENTREPRENEUR
       </div>
@@ -71,14 +54,20 @@ const logos = [
       <h2
         class="font-oswald text-white text-[14px] xl:text-[24px] font-extralight leading-none mb-8 tracking-[4px] md:tracking-[8px]"
       >
-        JOIN <span class="font-semibold">NEXT LAUNCHPAD 3.0</span> NOW
+        JOIN <span class="font-semibold">NEXT LAUNCHPAD</span> NOW
       </h2>
 
       <button
         onclick="window.location.href='https\:///tally.so/r/3y6yWx'"
-        class="mt-16 md:mt-0 transition-colors duration-200 ease-in-out w-[200px] h-[44px] rounded-[10px] bg-transparent md:bg-primary-yellow hover:bg-primary-yellow text-white hover:text-primary-black md:text-primary-black font-roboto font-bold text-sm tracking-wider border-2 border-primary-yellow md:border-none uppercase"
-        >Submit Pitch</button
+        class="mt-16 md:mt-0
+		w-[200px] h-[44px] rounded-[10px]
+		transition-colors duration-200 ease-in-out
+		border-2 border-primary-yellow md:border-none
+		font-roboto font-bold text-sm tracking-wider uppercase
+		bg-transparent md:bg-primary-yellow hover:bg-primary-yellow md:hover:bg-white text-white hover:text-primary-black md:text-primary-black"
       >
+        Submit Pitch
+      </button>
     </main>
 
     <footer
@@ -145,10 +134,11 @@ const logos = [
 
   .subtext-container .text-wrapper {
     position: relative;
-    padding-top: 0.1em;
-    display: inline-block;
+    align-items: center;
+    display: flex;
+    height: 100%;
     padding-right: 0.05em;
-    padding-bottom: 0.15em;
+    justify-content: center;
   }
 
   .subtext-container .line {
@@ -161,8 +151,8 @@ const logos = [
   }
 
   .subtext-container .line1 {
-    top: 0;
     left: 0;
+    top: 0;
   }
 
   .subtext-container .letter {
@@ -190,57 +180,67 @@ const logos = [
 
   const TEXTVARIATIONS = [
     { text: "IF you’re THE disruptive", heading: "ENTREPRENEUR" },
-    { text: "if you’re looking for expert", heading: "GUIDANCE" },
-    { text: "if you’re looking for extensive", heading: "FUNDING" },
+    { text: "IF you’re looking for expert", heading: "GUIDANCE" },
+    { text: "IF you’re looking for extensive", heading: "FUNDING" },
   ];
 
-  let variationIndex = 1;
-
-  const heading = document.querySelector("#heading");
-  const textWrapper = document.querySelector("#textWrapper");
-  const textWrapperWidth = textWrapper?.getBoundingClientRect().width;
-
-  console.log(textWrapper?.getBoundingClientRect().width);
+  const heading = document.querySelector("#heading") as HTMLElement;
+  const textWrapper = document.querySelector("#textWrapper") as HTMLElement;
 
   let splitHeading = SplitType.create(heading as HTMLElement);
-  let splitTextWrapper = SplitType.create(textWrapper as HTMLElement);
 
-  splitHeading?.words?.forEach((word) => {
+  splitHeading?.lines?.forEach((word) => {
     word.style.background = "linear-gradient(90deg, #b94e96 30%, #fabc43 100%)";
     word.style["-webkit-background-clip" as any] = "text";
-    word.style["-webkit-text-fill-color" as any] = "#b94e96";
+    word.style["-webkit-text-fill-color" as any] = "transparent";
   });
 
-  const tl = gsap.timeline({ repeat: -1 });
+  function animateVariation(variation: { text: string; heading: string }) {
+    const tl = gsap.timeline();
 
-  tl.add(
-    gsap.from(".line1", {
+    textWrapper.textContent = variation.text;
+    heading.textContent = variation.heading;
+
+    let splitHeading = SplitType.create(heading as HTMLElement);
+    let splitTextWrapper = SplitType.create(textWrapper as HTMLElement);
+
+    const textWrapperWidth = textWrapper.getBoundingClientRect().width;
+
+    splitHeading?.words?.forEach((word) => {
+      word.style.background =
+        "linear-gradient(90deg, #b94e96 30%, #fabc43 100%)";
+      word.style["-webkit-background-clip" as any] = "text";
+      word.style["-webkit-text-fill-color" as any] = "#b94e96";
+    });
+
+    tl.from(".line1", {
       scaleY: 0,
       duration: 0.7,
       stagger: 0.034,
       ease: "power4.out",
     })
-  )
-    .add(
-      gsap.to(".line1", {
-        x: textWrapperWidth,
+      .to(".line1", {
+        scaleY: 1,
         delay: 0.1,
         duration: 0.7,
         stagger: 0.034,
         ease: "power4.out",
+        x: textWrapperWidth,
       })
-    )
-    .add(
-      gsap.from(splitTextWrapper.chars, {
+      .from(splitTextWrapper.chars, {
         opacity: 0,
-        duration: 0.6,
+        stagger: 0.034,
         delay: -0.775,
+        ease: "power4.out",
+      })
+      .to(splitTextWrapper.chars, {
+        delay: 0.6,
+        opacity: 1,
+        duration: 0.4,
         stagger: 0.034,
         ease: "power4.out",
       })
-    )
-    .add(
-      gsap.from(splitHeading.chars, {
+      .from(splitHeading.chars, {
         delay: 0.2,
         rotateY: -90,
         duration: 0.8,
@@ -248,22 +248,54 @@ const logos = [
         repeatDelay: 0.2,
         ease: "expo.out",
       })
-    )
-    .add(
-      gsap.to(".subtext-container", {
-        delay: 1,
-        opacity: 0,
-        duration: 1,
+      .to(".line1", {
+        scaleY: 0,
+        delay: 0.1,
+        duration: 0.7,
+        stagger: 0.034,
         ease: "power4.out",
       })
-    )
-    .add(
-      gsap.to(splitHeading.chars, {
-        opacity: 0,
+      .to(splitTextWrapper.chars, {
         delay: 0.2,
-        stagger: 0.05,
+        opacity: 0,
+        ease: "expo.out",
       })
-    );
+      .to(splitHeading.chars, {
+        delay: 0.2,
+        opacity: 0,
+        ease: "expo.out",
+      })
+      .to(".line1", {
+        x: 0,
+        scaleY: 0,
+        delay: 0.1,
+        duration: 0.7,
+        stagger: 0.034,
+        ease: "power4.out",
+      });
 
-  tl.play();
+    SplitType.clearData();
+
+    tl.play();
+
+    return tl;
+  }
+
+  function runAnimations(index = 0) {
+    const timeoutDuration = 10000;
+
+    if (index >= TEXTVARIATIONS.length) {
+      index = 0;
+    }
+
+    animateVariation(TEXTVARIATIONS[index]);
+
+    const nextIndex = (index + 1) % TEXTVARIATIONS.length;
+
+    setTimeout(() => {
+      runAnimations(nextIndex);
+    }, timeoutDuration);
+  }
+
+  runAnimations();
 </script>
