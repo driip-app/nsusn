@@ -46,9 +46,8 @@ const logos = [
 
       <div
         id="heading"
-        class="my-4 md:my-8 w-full whitespace-nowrap uppercase font-big-shoulders text-[54px] sm:text-[64px] md:text-[100px] md2:text-[120px] md3:text-[140px] lg:text-[160px] xl:text-[180px] 3xl:text-[220px] leading-none tracking-[12px] gradient-text"
+        class="my-4 md:my-8 w-full whitespace-nowrap uppercase font-big-shoulders text-[54px] sm:text-[64px] md:text-[100px] md2:text-[120px] md3:text-[140px] lg:text-[160px] xl:text-[180px] 3xl:text-[220px] leading-none tracking-[12px]"
       >
-        ENTREPRENEUR
       </div>
 
       <h2
@@ -122,12 +121,6 @@ const logos = [
     }
   }
 
-  .gradient-text {
-    background: linear-gradient(90deg, #b94e96 30%, #fabc43 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
   .logo {
     opacity: 0;
   }
@@ -151,8 +144,9 @@ const logos = [
   }
 
   .subtext-container .line1 {
-    left: 0;
     top: 0;
+    left: 0;
+    opacity: 0;
   }
 
   .subtext-container .letter {
@@ -187,14 +181,6 @@ const logos = [
   const heading = document.querySelector("#heading") as HTMLElement;
   const textWrapper = document.querySelector("#textWrapper") as HTMLElement;
 
-  let splitHeading = SplitType.create(heading as HTMLElement);
-
-  splitHeading?.lines?.forEach((word) => {
-    word.style.background = "linear-gradient(90deg, #b94e96 30%, #fabc43 100%)";
-    word.style["-webkit-background-clip" as any] = "text";
-    word.style["-webkit-text-fill-color" as any] = "transparent";
-  });
-
   function animateVariation(variation: { text: string; heading: string }) {
     const tl = gsap.timeline();
 
@@ -208,9 +194,9 @@ const logos = [
 
     splitHeading?.words?.forEach((word) => {
       word.style.background =
-        "linear-gradient(90deg, #b94e96 30%, #fabc43 100%)";
+        "linear-gradient(90deg, #E40046 30%, #b94e96  100%)";
       word.style["-webkit-background-clip" as any] = "text";
-      word.style["-webkit-text-fill-color" as any] = "#b94e96";
+      word.style["-webkit-text-fill-color" as any] = "rgba(228, 0, 70, 0.8)";
     });
 
     tl.from(".line1", {
@@ -282,7 +268,7 @@ const logos = [
   }
 
   function runAnimations(index = 0) {
-    const timeoutDuration = 10000;
+    const timeoutDuration = 7500;
 
     if (index >= TEXTVARIATIONS.length) {
       index = 0;
